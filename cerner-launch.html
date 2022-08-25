@@ -3,17 +3,29 @@
 
 <head>
 	<script src='dist/fhir-client-v2.js'></script>
+  <link rel="stylesheet" href="launch.css">
  Hello Cerner User
+ <p> I am the page "launch.html"</p>
 </head>
 
 <body>
-	<p>Hello, I am the page "launch.html"</p>
+  <div id="clientid">
+    <label>Enter your client ID :</label>
+    <input type='text' name='client_id'>    
+    <button type='submit' onclick='callEhr()' >Take EHR Details</button>
+  </div>
+
   <script>
+function callEhr() {
+  const clientId = document.querySelector('input').value;
+  console.log(clientId);
   FHIR.oauth2.authorize({
-      'client_id': 'xyz',
+      'client_id': clientId,
        'scope':  'user/Patient.read launch openid profile',
       'redirect_uri': 'https://abhishekskini1317.github.io/SMART-on-FHIR.github.io/app.html'
     });
+  }
+
 </script>
 </body>
 

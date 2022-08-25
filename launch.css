@@ -1,0 +1,14 @@
+
+#clientid{
+
+}
+input{
+    width: 50%;
+    
+  }
+  button{
+    background-color: rgb(12, 64, 12);
+    border-radius: 4px;
+    color: aliceblue;
+    text-decoration: solid;
+  }
