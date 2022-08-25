@@ -2,35 +2,20 @@
 <html>
 
 <head>
-	<script src='dist/fhir-client-v2.js'></script>
+  <script src='dist/fhir-client-v2.js'></script>
   <link rel="stylesheet" href="launch.css">
   <div id="head">
-    <h1>Hello  Provider</h1>
+    <h1>Hello Provider</h1>
   </div>
 </head>
 
 <body>
   <div id="clientid">
     <label>Enter your client ID :</label>
-    <input type='text' name='client_id'>    
-    <button type='submit' onclick='callEhr()' >Get FHIR Data</button>
+    <input type='text' name='client_id'>
+    <button type='submit' onclick='getFhirData()'>Get FHIR Data</button>
   </div>
-  <script>
-function callEhr() {
-  const clientId = document.querySelector('input').value;
-  console.log(clientId);
-  FHIR.oauth2.authorize({
-      'client_id': clientId,
-       'scope':  'user/Patient.read launch openid profile',
-      'redirect_uri': 'https://abhishekskini1317.github.io/SMART-on-FHIR.github.io/app.html'
-    });
-  }
-
-</script>
+  <script src="launch.js"></script>
 </body>
 
 </html>
-
-
-
-
