@@ -4,8 +4,9 @@
 <head>
 	<script src='dist/fhir-client-v2.js'></script>
   <link rel="stylesheet" href="launch.css">
- <h1>Hello  Provider</h1>
- <p> I am the page "launch.html"</p>
+  <div id="head">
+    <h1>Hello  Provider</h1>
+  </div>
 </head>
 
 <body>
@@ -14,7 +15,6 @@
     <input type='text' name='client_id'>    
     <button type='submit' onclick='callEhr()' >Get FHIR Data</button>
   </div>
-
   <script>
 function callEhr() {
   const clientId = document.querySelector('input').value;
