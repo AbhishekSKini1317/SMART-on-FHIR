@@ -42,14 +42,16 @@ async function patientRequests() {
 }
 
 async function userRequests() {
-  var userDetails = await fetch(myApp.smart.state.serverUrl + "/Patient/" + myApp.smart.patient.id, {
+  var userDetails = await fetch(myApp.smart.user.fhirUser, {
     headers: {
       "Accept": "application/json+fhir",
       "Authorization": "Bearer " + myApp.smart.state.tokenResponse.access_token
     }
   }).then(function(data) {
     return data
-  });
+  }).catch(function(){
+    return null
+  })
   var userResponse = await userDetails.json()
   console.log(userResponse)
   var firstName = userResponse.name ? (userResponse.name[0].given || 'Nil') : 'Nil';
