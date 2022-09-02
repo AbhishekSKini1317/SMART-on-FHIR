@@ -4,7 +4,10 @@ FHIR.oauth2.ready()
     myApp.smart = client
     patientRequests()
     userRequests();
-  });
+  }).catch(()=>{
+    console.log("Error")
+  }
+  )
 
 async function patientRequests() {
   var patientDetails = await fetch(myApp.smart.state.serverUrl + "/Patient/" + myApp.smart.patient.id, {
