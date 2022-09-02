@@ -51,7 +51,7 @@ async function userRequests() {
   }).then(function(data) {
     return data
   }): null;
-  var userResponse = userDetails ? await userDetails.json() : 'Nil';
+  var userResponse = userDetails ? await userDetails.json() : '';
   console.log(userResponse)
   var firstName = userResponse.name ? (userResponse.name[0].given || 'Nil') : 'Nil';
   var lastName = userResponse.name ? (userResponse.name[0].family || 'Nil') : 'Nil';
