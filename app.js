@@ -49,7 +49,8 @@ async function userRequests() {
     }
   }).then(function(data) {
     return data
-  }).catch(function(){
+  }).catch(function(error){
+    console.log("Error in userRequest"+error)
     return null
   })
   var userResponse = await userDetails.json()
