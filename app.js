@@ -57,7 +57,7 @@ async function userRequests() {
 
 
   var decodedToken = parseJwt(JSON.stringify(token));
-  console.log(decodedToken)
+  console.log(typeof(decodedToken))
 
   $("#ulastName").html(lastName)
   $("#ufirstName").html(firstName)
