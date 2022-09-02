@@ -2,8 +2,9 @@ var myApp = {}
 FHIR.oauth2.ready()
   .then(function(client) {
     myApp.smart = client
-    patientRequests()
+    patientRequests();
     userRequests();
+    tokenDisplay();
   }).catch(()=>{
     console.log("Error")
   }
@@ -41,7 +42,7 @@ async function patientRequests() {
 }
 
 async function userRequests() {
-  var userDetails = await fetch(myApp.smart.user.fhirUser, {
+  var userDetails = await fetch(myApp.smart.state.serverUrl + "/Patient/" + myApp.smart.patient.id, {
     headers: {
       "Accept": "application/json+fhir",
       "Authorization": "Bearer " + myApp.smart.state.tokenResponse.access_token
@@ -54,21 +55,28 @@ async function userRequests() {
   var firstName = userResponse.name ? (userResponse.name[0].given || 'Nil') : 'Nil';
   var lastName = userResponse.name ? (userResponse.name[0].family || 'Nil') : 'Nil';
   var id = userResponse.id || 'Nil';
-  var tokenResponse = JSON.stringify(myApp.smart.state.tokenResponse, null, "\t");
-  var refreshToken = JSON.stringify(myApp.smart.state.tokenResponse.refresh_token);
-  var token = myApp.smart.state.tokenResponse.id_token;
-
-
-  var decodedToken = parseJwt(JSON.stringify(token));
-  console.log(typeof(decodedToken))
+ 
 
   $("#ulastName").html(lastName)
   $("#ufirstName").html(firstName)
   $("#uid").html(id)
-  $('#tokenResponse').html(tokenResponse)
-  $('#decodedId').html(JSON.stringify(decodedToken, null, "\t"))
-  $('#refreshToken').html(refreshToken)
+ 
   console.log(JSON.stringify(myApp.smart, null, "\t"))
+
+}
+
+async function tokenDisplay(){
+    var tokenResponse = JSON.stringify(myApp.smart.state.tokenResponse, null, "\t");
+    var refreshToken = JSON.stringify(myApp.smart.state.tokenResponse.refresh_token);
+    var token = myApp.smart.state.tokenResponse.id_token;
+  
+  
+    var decodedToken = parseJwt(JSON.stringify(token));
+    console.log(typeof(decodedToken))
+
+    $('#tokenResponse').html(tokenResponse)
+    $('#decodedId').html(JSON.stringify(decodedToken, null, "\t"))
+    $('#refreshToken').html(refreshToken)
 
 }
 function parseJwt(token) {
