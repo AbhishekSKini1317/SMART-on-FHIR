@@ -72,7 +72,7 @@ async function tokenDisplay(){
   
   
     var decodedToken = parseJwt(JSON.stringify(token));
-    console.log(typeof(decodedToken))
+    console.log(decodedToken)
 
     $('#tokenResponse').html(tokenResponse)
     $('#decodedId').html(JSON.stringify(decodedToken, null, "\t"))
