@@ -50,7 +50,7 @@ async function userRequests() {
     }
   }).then(function(data) {
     return data
-  }): null;
+  }): myApp.smart.state.tokenResponse;
   var userResponse = userDetails ? await userDetails.json() : '';
   console.log(userResponse)
   var firstName = userResponse.name ? (userResponse.name[0].given || 'Nil') : 'Nil';
