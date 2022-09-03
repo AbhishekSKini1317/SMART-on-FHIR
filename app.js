@@ -20,7 +20,7 @@ async function patientRequests() {
         return data
     });
     var patientResponse = await patientDetails.json()
-    console.log("Patient response" + patientResponse)
+    console.log(patientResponse)
     var firstName = patientResponse.name ? (patientResponse.name[0].given || 'Nil') : 'Nil';
     var lastName = patientResponse.name ? (patientResponse.name[0].family || 'Nil') : 'Nil';
     var mobile = patientResponse.telecom ? (patientResponse.telecom[0].value || 'Nil') : 'Nil';
@@ -37,7 +37,7 @@ async function patientRequests() {
     $("#DOB").html(DOB)
     $("#address").html(address)
 
-    console.log("From patientRequest frunction" + myApp.smart)
+    console.log(myApp.smart)
 }
 async function userRequests() {
     const id_token = myApp.smart.state.tokenResponse.id_token;
@@ -55,7 +55,7 @@ async function userRequests() {
         return data
     });
     var userResponse = await userDetails.json();
-    console.log("User Response" + userResponse);
+    console.log(userResponse);
 
     var firstName = userResponse.name ? (userResponse.name[0].given || 'Nil') : 'Nil';
     var lastName = userResponse.name ? (userResponse.name[0].family || 'Nil') : 'Nil';
@@ -72,7 +72,7 @@ async function tokenDisplay() {
     var refreshToken = JSON.stringify(myApp.smart.state.tokenResponse.refresh_token);
     var token = myApp.smart.state.tokenResponse.id_token;
     var decodedToken = parseJwt(JSON.stringify(token));
-    console.log("Decoded token" + decodedToken)
+    console.log(decodedToken)
 
     $('#tokenResponse').html(tokenResponse)
     $('#decodedId').html(JSON.stringify(decodedToken, null, "\t"))
