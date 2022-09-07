@@ -1,7 +1,7 @@
 var myApp = {}
 var decodedToken;
 FHIR.oauth2.ready()
-  .then(function(client) {
+  .then(function (client) {
     myApp.smart = client
     tokenDisplay();
     patientRequests();
@@ -20,11 +20,15 @@ async function patientRequests() {
       "Accept": "application/json+fhir",
       "Authorization": "Bearer " + myApp.smart.state.tokenResponse.access_token
     }
-  }).then(function(data) {
+  }).then(function (data) {
     return data
   });
+
   var patientResponse = await patientDetails.json()
+  var formattedPatientResponse = formatedJson(patientResponse);
+  document.getElementById('patientJson').innerHTML = formattedPatientResponse;
   console.log(patientResponse)
+
   var firstName = patientResponse.name ? (patientResponse.name[0].given || 'Nil') : 'Nil';
   var lastName = patientResponse.name ? (patientResponse.name[0].family || 'Nil') : 'Nil';
   var mobile = patientResponse.telecom ? (patientResponse.telecom[0].value || 'Nil') : 'Nil';
@@ -50,10 +54,13 @@ async function userRequests(fhirUserUrl) {
       "Accept": "application/json+fhir",
       "Authorization": "Bearer " + myApp.smart.state.tokenResponse.access_token
     }
-  }).then(function(data) {
+  }).then(function (data) {
     return data
   });
   var userResponse = await userDetails.json();
+  var formattedUserResponse = formatedJson(userResponse);
+  document.getElementById('userJson').innerHTML = formattedUserResponse;
+
   console.log(userResponse);
 
   var firstName = userResponse.name ? (userResponse.name[0].given || 'Nil') : 'Nil';
@@ -66,14 +73,18 @@ async function userRequests(fhirUserUrl) {
 }
 
 async function tokenDisplay() {
-  var tokenResponse = JSON.stringify(myApp.smart.state.tokenResponse, null, "\t");
-  var refreshToken = JSON.stringify(myApp.smart.state.tokenResponse.refresh_token);
+
   var token = myApp.smart.state.tokenResponse.id_token;
   decodedToken = parseJwt(JSON.stringify(token));
   console.log(decodedToken.fhirUser)
+  var tokenResponse = formatedJson(myApp.smart.state.tokenResponse)
+  var formatteddeocoededToken = formatedJson(decodedToken)
+  var refreshToken = JSON.stringify(myApp.smart.state.tokenResponse.refresh_token);
 
-  $('#tokenResponse').html(tokenResponse)
-  $('#decodedId').html(JSON.stringify(decodedToken, null, "\t"))
+
+
+  document.getElementById('tokenResponse').innerHTML = tokenResponse;
+  document.getElementById('decodedId').innerHTML = formatteddeocoededToken;
   $('#refreshToken').html(refreshToken)
 
 }
@@ -81,9 +92,28 @@ async function tokenDisplay() {
 function parseJwt(token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
   return JSON.parse(jsonPayload);
 };
 
+function formatedJson(jsonValue, margin = 24) {
+
+  var formattedJson = '';
+  Object.entries(jsonValue).forEach(([key, value]) => {
+    formattedJson += `<span style='margin-left:${margin}px;' class='json-key'>"${key}"</span><span class="syntax" ${this.scope}>:</span>`
+    if (typeof value == "object") {
+      formattedJson += `<span class='syntax'>{</span><br/>`
+      formattedJson += this.formatedJson(value, margin + 12)
+      formattedJson += `<br/><span style='margin-left:${margin}px;' class='syntax'>}</span>`
+    } else {
+      if (Object.keys(jsonValue).reverse()[0] != key) formattedJson += `<span class='value'>"${value}"</span><span class="syntax">,</span><br/>`
+      else
+        formattedJson += `<span class='value'>"${value}"</span>`
+    }
+  })
+
+  return formattedJson;
+
+}
